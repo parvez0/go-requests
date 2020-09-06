@@ -8,7 +8,7 @@ import (
 )
 
 // global http client
-var client *requests.Client
+var client *
 
 // creating a http client with default settings
 func TestCreateClient(t *testing.T) {
