@@ -133,7 +133,7 @@ func RequestBodyBuilder(body interface{}) (*bytes.Buffer, error) {
 			log.Debugf("failed json marshall - %v", err)
 			return nil, err
 		}
-		log.Debugf("stringifies json request body - %v", mr)
+		log.Debugf("stringifies json request body - %v", string(mr))
 		reader = bytes.NewBuffer(mr)
 	}
 	return reader, nil
@@ -151,21 +151,21 @@ func (client *Client) Send() (*Response, error) {
 
 // builds the uri with all the query parameters and if basepath is provided attaches that as well
 // if basepath and full url both provided, full url will take precedence
-func UriBuilder(basePath string, url string, qp map[string]string) string {
+func UriBuilder(basePath string, urlPath string, qp map[string]string) string {
 	qString := ""
 	for k, v := range qp {
 		qString += k +"="+ v
 	}
-	if strings.Contains(url, "?"){
-		url += qString
+	if strings.Contains(urlPath, "?"){
+		urlPath += qString
 	}
-	url += "?" + qString
-	if strings.HasPrefix(url, "http"){
-		url += qString
+	urlPath += "?" + qString
+	if strings.HasPrefix(urlPath, "http"){
+		urlPath += qString
 	} else if strings.HasSuffix(basePath, "/"){
-		url = basePath + qString
+		urlPath = basePath + urlPath
 	} else {
-		url = basePath + "/" + qString
+		urlPath = basePath + urlPath
 	}
-	return url
+	return urlPath
 }
