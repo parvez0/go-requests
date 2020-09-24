@@ -7,12 +7,12 @@ you can find the original package [here](https://golang.org/pkg/net/http/).
  - [Installation](#installation)
  - [Example](#Example)
  - [Request Methods](#Methods)
-    - [GlobalOptions](#Global Options)
+    - [GlobalOptions](#GlobalOptions)
     - [Options](#Options)
-    - [NewClient](#New Client)
-    - [NewRequest](#New Request)
+    - [NewClient](#NewClient)
+    - [NewRequest](#NewRequest)
     - [Send](#Send)
- - [Response Methods](#Response Methods)
+ - [Response Methods](#ResponseMethods)
     - [GetBody](#GetBody)
     
 #### Installation
