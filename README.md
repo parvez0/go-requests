@@ -97,7 +97,7 @@ if err != nil{
 }
 ```
 #### Request Methods
-- #####GlobalOptions
+- ##### GlobalOptions
   You can use global options to set request settings globally, pass the global options object to the NewClient function
   and will be used by default, you can overwrite these settings at request level 
 ```go
