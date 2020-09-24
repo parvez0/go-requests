@@ -12,14 +12,14 @@ func main() {
 	headers.Set("Content-Type", "application/json")
 	gOptions := requests.GlobalOptions{
 		Timeout:  30 * time.Second,
-		BasePath: "https://app.yellowmessenger.com",
+		BasePath: "https://techbase.com",
 		Headers:  headers,
 	}
 	client := requests.NewClient(gOptions)
 	options := requests.Options{
-		Url: "/api/data/nlp/onlyMapping",
+		Url: "/users",
 		Method: "GET",
-		Query: map[string]string{"bot": "x1572327973956"},
+		Query: map[string]string{"type": "free"},
 	}
 	err := client.NewRequest(options)
 	if err != nil{
