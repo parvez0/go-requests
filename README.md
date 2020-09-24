@@ -8,8 +8,8 @@ you can find the original package [here](https://golang.org/pkg/net/http/).
  - [Example](#Example)
  - [Request Methods](#Methods)
     - [GlobalOptions](#GlobalOptions)
-    - [Options](#Options)
     - [NewClient](#NewClient)
+    - [Options](#Options)
     - [NewRequest](#NewRequest)
     - [Send](#Send)
  - [Response Methods](#ResponseMethods)
@@ -96,4 +96,36 @@ if err != nil{
 	// handle error
 }
 ```
+#### Request Methods
+- #####GlobalOptions
+  You can use global options to set request settings globally, pass the global options object to the NewClient function
+  and will be used by default, you can overwrite these settings at request level 
+```go
+    // global client options
+    gOptions := GlobalOptions {
+    	Timeout time.Duration
+    	BasePath string
+    	Headers http.Header
+    }
+
+    client := requests.NewClient(goptions)
+```
+- ##### NewClient
+  You can create your own request client with custom settings as follows
+```go
+   //define your own transport object
+    transport := http.Transport{
+    		MaxIdleConns:           10,
+    		MaxIdleConnsPerHost:    20,
+    		MaxConnsPerHost:        40,
+    	}
+    
+    cient := requests.NewClient(transport)
+```          
+ OR
+```go
+    // create a http.Client and pass it to requests wrapper
+    client := http.Client{}
+    wrapper := requests.NewClient(client)
+``` 
 
