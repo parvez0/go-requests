@@ -12,7 +12,7 @@ func main() {
 	headers.Set("Content-Type", "application/json")
 	gOptions := requests.GlobalOptions{
 		Timeout:  30 * time.Second,
-		BasePath: "https://techbase.com",
+		BasePath: "https://dummybaseurl.com",
 		Headers:  headers,
 	}
 	client := requests.NewClient(gOptions)

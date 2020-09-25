@@ -11,7 +11,6 @@ you can find the original package [here](https://golang.org/pkg/net/http/).
     - [NewClient](#NewClient)
     - [Options](#Options)
     - [NewRequest](#NewRequest)
-    - [Send](#Send)
  - [Response Methods](#ResponseMethods)
     - [GetBody](#GetBody)
     
@@ -128,4 +127,50 @@ if err != nil{
     client := http.Client{}
     wrapper := requests.NewClient(client)
 ``` 
+- ##### Options
+  (Options) contains all the parameters required for api call, any parameter provided in options will replace the globalOptions
+```go
+   options := requests.Options{
+	            Url: "/users",
+	            Method: "GET",
+	            Query: map[string]string{"type": "free"},
+	            Body: nil || {interface}
+	          }
+```  
+- ##### NewRequest
+  NewRequest uses the options, to create a http.request object, which then can be call using the client.Send() method, 
+  each call to NewRequest will create a new request object.
+```go
+  err := client.NewRequest(options)
+  if err != nil{
+    // handle error
+  } 
+  res, err := client.Send()
+```  
+#### Response Methods
+Each Send() method will return a new requests.Response object which is a wrapper on http.Response and error. This wrapper
+provides the following methods.
 
+- ##### GetBody
+  Returns the []bytes from the response body, if you want to  directly get 
+  the raw response just use resp.Res function which will return http.Response.
+  ```go
+    err := client.NewRequest(options)
+    if err != nil{
+      // handle error
+    } 
+    res, err := client.Send()
+    body, err := res.GetBody()
+  ``` 
+- ##### GetStatusCode
+  GetStatusCode will return an int with http response status code.
+  ```go
+  res, err := client.Send()
+  statusCode := res.GetStatusCode()
+    ```
+- ##### GetHeaders
+  GetHeaders will return a header object from the response.
+    ```go
+    res, err := client.Send()
+    headers := res.GetHeaders()
+    ```
