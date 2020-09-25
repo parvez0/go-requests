@@ -13,6 +13,8 @@ you can find the original package [here](https://golang.org/pkg/net/http/).
     - [NewRequest](#NewRequest)
  - [Response Methods](#ResponseMethods)
     - [GetBody](#GetBody)
+    - [GetStatusCode](#GetStatusCode)
+    - [GetHeaders](#GetHeaders)
     
 #### Installation
     
@@ -138,7 +140,7 @@ if err != nil{
 	          }
 ```  
 - ##### NewRequest
-  NewRequest uses the options, to create a http.request object, which then can be call using the client.Send() method, 
+  NewRequest uses the options to create a http.request object, which then can be call using the client.Send() method, 
   each call to NewRequest will create a new request object.
 ```go
   err := client.NewRequest(options)
