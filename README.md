@@ -48,7 +48,7 @@ if err != nil{
     // handle error
 }
 
-// performing a get request on 
+// performing a get request
 res, err := req.Send()
 
 if err != nil{
@@ -82,7 +82,7 @@ if err != nil{
     // handle error
 }
 
-// performing a get request on 
+// performing a post request 
 res, err := req.Send()
 
 if err != nil{
