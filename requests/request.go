@@ -13,13 +13,17 @@ import (
 // custom types
 type Client struct {
 	Client *http.Client
-	Request *http.Request
 	Headers http.Header
 	BasePath string
 }
 
 type Response struct {
 	Res *http.Response
+}
+
+type Request struct {
+	Req *http.Request
+	Client *http.Client
 }
 
 // global client options
@@ -104,22 +108,29 @@ func (wr *Response) GetStatusCode() int {
 
 // creates a new request object, this needs to be invoke for every call
 // client will hold all the global info about the request
-func (client *Client) NewRequest(options Options) error {
+func (client *Client) NewRequest(options Options) (*Request, error) {
 	var err error
 	uri := UriBuilder(client.BasePath, options.Url, options.Query)
 	body, err := RequestBodyBuilder(options.Body)
 	if err != nil{
-		return err
+		return nil, err
 	}
-	client.Request, err = http.NewRequest(options.Method, uri, body)
+	req, err := http.NewRequest(options.Method, uri, body)
+	if err != nil{
+		return nil, err
+	}
+	req.Header = client.Headers
 	if len(options.Headers) != 0{
-		client.Request.Header = options.Headers
+		req.Header = options.Headers
 	}
-	return err
+	return &Request{
+		Req:    req,
+		Client: client.Client,
+	}, nil
 }
 
 // converts the body to json, if body is empty returns null or empty
-// returns a buffer of stringified struct or request body
+// returns a buffer of stringifies struct or request body
 func RequestBodyBuilder(body interface{}) (*bytes.Buffer, error) {
 	var reader *bytes.Buffer
 	switch body.(type) {
@@ -140,10 +151,10 @@ func RequestBodyBuilder(body interface{}) (*bytes.Buffer, error) {
 }
 
 // triggers the api call and returns error or response object
-func (client *Client) Send() (*Response, error) {
+func (req *Request) Send() (*Response, error) {
 	var wr Response
 	// calling the api
-	resp, err := client.Client.Do(client.Request)
+	resp, err := req.Client.Do(req.Req)
 	// pass the api response to current client wrapper
 	wr.Res = resp
 	return &wr, err

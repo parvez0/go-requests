@@ -42,14 +42,14 @@ options := requests.Options{
 }
 
 // creating a new request
-err := client.NewRequest(options)
+req, err := client.NewRequest(options)
 
 if err != nil{
     // handle error
 }
 
 // performing a get request on 
-res, err := client.Send()
+res, err := req.Send()
 
 if err != nil{
     // handle error
@@ -76,14 +76,14 @@ options := requests.Options{
            	Body: body // accepts type interface, and tries to convert it to json
            }
 // creating a new request
-err := client.NewRequest(options)
+req, err := client.NewRequest(options)
 
 if err != nil{
     // handle error
 }
 
 // performing a get request on 
-res, err := client.Send()
+res, err := req.Send()
 
 if err != nil{
     // handle error
@@ -140,14 +140,14 @@ if err != nil{
 	          }
 ```  
 - ##### NewRequest
-  NewRequest uses the options to create a http.request object, which then can be call using the client.Send() method, 
+  NewRequest uses the options to create a http.request object which will be wrapped around by custom requests.Request struct, which then can be call using the req.Send() method, 
   each call to NewRequest will create a new request object.
 ```go
-  err := client.NewRequest(options)
+  req, err := client.NewRequest(options)
   if err != nil{
     // handle error
   } 
-  res, err := client.Send()
+  res, err := req.Send()
 ```  
 #### Response Methods
 Each Send() method will return a new requests.Response object which is a wrapper on http.Response and error. This wrapper

@@ -16,7 +16,7 @@ func TestCreateClient(t *testing.T) {
 	headers.Set("Content-Type", "application/json")
 	gOptions := requests.GlobalOptions{
 		Timeout:  30 * time.Second,
-		BasePath: "https://www.random.org/",
+		BasePath: "http://localhost:5000/",
 		Headers:  headers,
 	}
 	client = requests.NewClient(gOptions)
@@ -26,14 +26,14 @@ func TestCreateClient(t *testing.T) {
 // initializing the request with custom options
 func TestGetRequest(t *testing.T) {
 	options := requests.Options{
-		Url: "/quick-pick/",
+		Url: "/test",
 		Method: "GET",
 	}
-	err := client.NewRequest(options)
+	req, err := client.NewRequest(options)
 	if err != nil{
 		t.Fatalf("failed to create initailize the request object - %v", err)
 	}
-	res, err := client.Send()
+	res, err := req.Send()
 	if err != nil{
 		t.Fatalf("failed to make the get request - %v", err)
 	}
@@ -52,11 +52,11 @@ func TestQueryGetRequest(t *testing.T) {
 		Method: "GET",
 		Query: map[string]string{"tickets": "2", "lottery": "5x69.1x26"},
 	}
-	err := client.NewRequest(options)
+	req, err := client.NewRequest(options)
 	if err != nil{
 		t.Fatalf("failed to create initailize the request object - %v", err)
 	}
-	res, err := client.Send()
+	res, err := req.Send()
 	if err != nil{
 		t.Fatalf("failed to make the get request - %v", err)
 	}

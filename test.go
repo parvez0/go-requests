@@ -12,27 +12,26 @@ func main() {
 	headers.Set("Content-Type", "application/json")
 	gOptions := requests.GlobalOptions{
 		Timeout:  30 * time.Second,
-		BasePath: "https://dummybaseurl.com",
+		BasePath: "http://localhost:5000",
 		Headers:  headers,
 	}
 	client := requests.NewClient(gOptions)
 	options := requests.Options{
-		Url: "/users",
-		Method: "GET",
-		Query: map[string]string{"type": "free"},
+		Url: "/test",
+		Method: "POST",
 	}
-	err := client.NewRequest(options)
+	req, err := client.NewRequest(options)
 	if err != nil{
 		log.Fatalf("failed to create initailize the request object - %v", err)
 	}
-	res, err := client.Send()
+	res, err := req.Send()
 	if err != nil{
 		log.Fatalf("failed to make the get request - %v", err)
 	}
 	statusCode := res.GetStatusCode()
-	_, err = res.GetBody()
+	body, err := res.GetBody()
 	if err != nil{
 		log.Fatalf("failed to get body from response - %v", err)
 	}
-	log.Printf("success in making the api call with status code - %d", statusCode)
+	log.Printf("success in making the api call with status code - %d - body - %+v", statusCode, string(body))
 }
