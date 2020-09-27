@@ -157,11 +157,11 @@ provides the following methods.
   Returns the []bytes from the response body, if you want to  directly get 
   the raw response just use resp.Res function which will return http.Response.
   ```go
-    err := client.NewRequest(options)
+    req, err := client.NewRequest(options)
     if err != nil{
       // handle error
     } 
-    res, err := client.Send()
+    res, err := req.Send()
     body, err := res.GetBody()
   ``` 
 - ##### GetStatusCode
