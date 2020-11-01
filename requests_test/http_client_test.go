@@ -16,7 +16,7 @@ func TestCreateClient(t *testing.T) {
 	headers.Set("Content-Type", "application/json")
 	gOptions := requests.GlobalOptions{
 		Timeout:  30 * time.Second,
-		BasePath: "http://localhost:5000/",
+		BasePath: "http://localhost:5000",
 		Headers:  headers,
 	}
 	client = requests.NewClient(gOptions)

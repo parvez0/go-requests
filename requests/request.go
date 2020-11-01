@@ -3,6 +3,7 @@ package requests
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -42,9 +43,6 @@ type Options struct {
 	Query map[string]string
 }
 
-// initialize logger
-var log = NewLogger()
-
 // create a request client with global configurations
 func NewClient(args ...interface{}) *Client {
 	var client Client
@@ -59,31 +57,31 @@ func NewClient(args ...interface{}) *Client {
 	for _, arg := range args{
 		switch arg.(type) {
 		case http.Client:
-			log.Debugf("provided http.Client object replacing with original")
+			log("provided http.Client object replacing with original")
 			cli := arg.(http.Client)
 			client.Client = &cli
 		case *http.Client:
-			log.Debugf("provided pointer to http.Client object replacing with original")
+			log("provided pointer to http.Client object replacing with original")
 			client.Client = arg.(*http.Client)
 		case http.Transport:
-			log.Debugf("provided http.Transport object replacing with original")
+			log("provided http.Transport object replacing with original")
 			cli := arg.(http.Transport)
 			client.Client.Transport = &cli
 		case *http.Transport:
-			log.Debugf("provided pointer to http.Transport object replacing with original")
+			log("provided pointer to http.Transport object replacing with original")
 			client.Client.Transport = arg.(*http.Transport)
 		case http.CookieJar:
-			log.Debugf("provided http.CookieJar object replacing with original")
+			log("provided http.CookieJar object replacing with original")
 			cli := arg.(http.CookieJar)
 			client.Client.Jar = cli
 		case GlobalOptions:
-			log.Debugf("provided an global options setting it in global config")
+			log("provided an global options setting it in global config")
 			opts := arg.(GlobalOptions)
 			client.Client.Timeout = opts.Timeout
 			client.Headers = opts.Headers
 			client.BasePath = opts.BasePath
 		default:
-			log.Infof("type of client does not match %s", reflect.TypeOf(arg))
+			log(fmt.Sprintf("type of client does not match %s", reflect.TypeOf(arg)))
 		}
 	}
 
@@ -135,16 +133,16 @@ func RequestBodyBuilder(body interface{}) (*bytes.Buffer, error) {
 	var reader *bytes.Buffer
 	switch body.(type) {
 	case string:
-		log.Debug("converting the request body to bytes of string")
+		log("converting the request body to bytes of string")
 		reader = bytes.NewBuffer([]byte(body.(string)))
 	default:
-		log.Debug("trying to convert the request body to json")
+		log("trying to convert the request body to json")
 		mr, err := json.Marshal(body)
 		if err != nil{
-			log.Debugf("failed json marshall - %v", err)
+			log(fmt.Sprintf("failed json marshall - %v", err))
 			return nil, err
 		}
-		log.Debugf("stringifies json request body - %v", string(mr))
+		log(fmt.Sprintf("stringifies json request body - %v", string(mr)))
 		reader = bytes.NewBuffer(mr)
 	}
 	return reader, nil
